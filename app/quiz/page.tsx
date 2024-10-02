@@ -14,7 +14,7 @@ export default function Quiz() {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             if (!socket) {
-                socket = io('https://caimera-steel.vercel.app', { path: '/api/socket' });
+                socket = io('http://localhost:3000', { path: '/api/socket' });
             }
             const url = window.location.href || ""
             const userName = url.split("=")[1]

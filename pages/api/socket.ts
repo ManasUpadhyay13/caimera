@@ -23,6 +23,7 @@ function generateQuestion() {
 
 let currentQuestion = generateQuestion();
 let scores: Record<string, number> = {};
+let questionAnswered = false;
 
 export default function handler(req: NextApiRequest, res: any) {
     if (!res.socket.server.io) {
@@ -44,14 +45,17 @@ export default function handler(req: NextApiRequest, res: any) {
             });
 
             socket.on('submitAnswer', ({ answer, name }) => {
-                if (answer === currentQuestion.answer) {
-                    if (!scores[name]) scores[name] = 0;
-                    scores[name] += 5;
+                if (!questionAnswered && answer === currentQuestion.answer) {
+                    questionAnswered = true;
+                    scores[name] = scores[name] ? scores[name] + 5 : 5;
 
                     io.emit('scoreUpdate', getSortedScores());
 
-                    currentQuestion = generateQuestion();
-                    io.emit('newQuestion', currentQuestion.question);
+                    setTimeout(() => {
+                        currentQuestion = generateQuestion();
+                        questionAnswered = false;
+                        io.emit('newQuestion', currentQuestion.question);
+                    }, 1000);
                 } else {
                     scores[name] = scores[name] ? scores[name] - 2 : -2;
                     io.emit('scoreUpdate', getSortedScores());
