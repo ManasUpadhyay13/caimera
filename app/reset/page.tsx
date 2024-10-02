@@ -9,7 +9,7 @@ const Reset = () => {
     const router = useRouter()
 
     useEffect(() => {
-        let socket = io('http://localhost:3000', { path: '/api/socket' });
+        let socket = io('https://caimera-steel.vercel.app/', { path: '/api/socket' });
         socket.emit('resetLeaderboard');
         router.push("/")
     })
