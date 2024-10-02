@@ -2,12 +2,10 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import Leaderboard from '@/components/Leaderboard';
-import { useSearchParams } from 'next/navigation';
 
 let socket: Socket | null = null;
 
 export default function Quiz() {
-    const searchParams: any = useSearchParams();
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [name, setName] = useState<string | null>(null);
@@ -40,7 +38,7 @@ export default function Quiz() {
                 }
             };
         }
-    }, [searchParams]);
+    }, []);
 
     const submitAnswer = () => {
         if (socket && name) {
